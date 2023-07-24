@@ -1,0 +1,25 @@
+[  {
+        "class_name": "capture\\query",
+        "args": [
+            "client",
+            "select  title, name, quarterly, contact, phone, address, if(email is null, name, email)as email2 from client" ,
+            "mutallco_rental"
+        ]
+   },
+   ["mutall_users","user", [],"name", ["\\capture\\lookup","client","name"]],
+   ["mutall_users","user", [],"title", ["\\capture\\lookup","client","title"]],
+   ["mutall_users","mobile", [],"num", ["\\capture\\lookup","client","phone"]],
+   ["mutall_users","user", [],"address", ["\\capture\\lookup","client","address"]],
+   ["mutall_users","user", [],"email", ["\\capture\\lookup","client","email2"]],
+   
+   ["rentize","tenant", [],"quarterly", ["\\capture\\lookup","client","quarterly"]],
+   ["rentize","tenant", [],"contact", ["\\capture\\lookup","client","contact"]],
+   ["rentize","tenant", [],"email", ["\\capture\\lookup","client","email2"]],
+   
+   ["rentize", "property", [], "uid", "mutall_rental" ],
+   ["rentize", "property", [], "name", "Mutall Investment Co. Ltd" ],
+   ["mutall_users", "business", [], "id", "mutall_rental"],
+   ["mutall_users", "business", [], "name", "Mutall Investment Co. Ltd"],
+   ["rentize", "landlord", [], "email", "mutallcompany@gmail.com"]
+]
+

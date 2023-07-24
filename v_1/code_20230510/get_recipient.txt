@@ -1,0 +1,27 @@
+	//
+	//Get each reciever and create a recivers array using the id of the selector
+	//as the identifying parameter
+	get_recipient(): lib.recipient {
+		//
+		//Get the type of recipient
+		const type: string = this.get_checked_value("recipient");
+		//
+		//Get the business
+		const business: outlook.business = this.app.user!.business!;
+		//
+		//Get the user added to the list of chosen recipients
+		//
+		//Get the chosen recipients panel
+		const panel = <HTMLDivElement>this.get_element("chosen");
+		//
+		//Get all selected inputs of type checkbox
+		const values = Array.from(panel.querySelectorAll('input[type="checkbox"]'));
+		//
+		//Retrieve the user primary key as the value from the selected elements
+		const user: Array<string> = values.map(pk => (<HTMLInputElement>pk).value);
+		//
+		//
+		return type === "group"
+			? { type: "group", business }
+			: { type: "individual", user: user };
+	}

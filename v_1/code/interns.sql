@@ -1,0 +1,4 @@
+SELECT 
+    `surname` 
+FROM 
+    `intern`;

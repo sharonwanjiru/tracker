@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>View Minutes</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <link rel="stylesheet" type="text/css" href="minutes.css" />
+    
+    <script type="module">
+        //
+        // Import the view_minutes and create_minute functions from JavaScript files
+        import { minutes } from "./minutes.js";
+        //
+        const Minutes = new minutes();
+        //
+        //Exposing the minutes variable to be accessibe in HTML
+        window.Minutes = Minutes;
+        //
+        //Exwcute the standard method for showng panels of a page
+        await Minutes.show_panels();
+        
+    </script>
+    
+  </head>
+  <body>
+    <!--    Adding the header division-->
+      <div id="mid_header"> 
+          <details id="nav_mobile">
+              <summary>Navigate Minutes</summary>
+              
+          </details>
+      </div>
+      <div id="nav"></div>
+      
+      <div id="content"></div>
+  </body>
+</html>

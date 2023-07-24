@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Portfolio</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="portfolio.css" />
+    <script type="module">
+      //
+      //Import the view minutes function from a a javscript file
+      import { view_portfolios } from "./view_portfolio.js";
+      //
+      //Load the minutes for viewing
+      view_portfolios();
+    </script>
+  </head>
+  <body>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>View</th>
+          <th>Edit</th>
+          <th>Copy</th>
+        </tr>
+      </thead>
+      <tbody id="body"></tbody>
+    </table>
+  </body>
+</html>

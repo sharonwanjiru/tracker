@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <title>No repetitive tasks</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="general.css">
+    </head>
+
+    <body>
+        <fieldset id="at">
+            <legend>Schedule non-repetitive tasks</legend>
+            <label>Job no
+                <input 
+                data-dbname="mutall_users" 
+                data-ename="job" 
+                data-cname="num" 
+                id="num"  
+                type="number">
+            </label>
+            <label>Message
+                <textarea 
+                data-dbname="mutall_users" 
+                data-ename="job" 
+                data-cname="msg" 
+                id="text" 
+                type="text">
+            </textarea>
+            </label>
+            <label>Date
+                <input  
+                id="date"
+                type="text">
+            </label>
+        </fieldset>
+    </body>
+</html>  

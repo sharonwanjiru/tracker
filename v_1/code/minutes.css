@@ -1,0 +1,140 @@
+
+header {
+  background-image: linear-gradient(navy, black);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 10px;
+ 
+}
+table{
+    margin-top:100px;
+}
+.nav-item {
+  list-style: none;
+}
+.navbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: 10px;
+}
+.hamburger {
+  display: none;
+}
+.nav-menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.nav-item {
+  margin-left: 10px;
+}
+.bar {
+  display: block;
+  width: 30px;
+  height: 4px;
+  margin: 5px auto;
+  margin-right: 10px;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  background-color: ghostwhite;
+}
+.nav-link {
+padding: 5px 10px;
+background-color: #f8f8f8;
+border: none;
+border-radius: 4px;
+font-size: 12px;
+font-weight: bold;
+text-decoration: none;
+color: #333;
+cursor: pointer;
+}
+.nav-item button:hover {
+  background-color: blue;
+}
+a,
+td {
+  font-size: 25px;
+  line-height: 1.5;
+  margin-right: 10px;
+}
+p,
+li,
+code,
+summary {
+  font-size: 22px;
+  margin-bottom: 12px;
+}
+table {
+  border: 1px solid black;
+  width: 100%;
+}
+th,
+td {
+  border: 1px solid black;
+}
+th {
+  font-size: 25px;
+  font-weight: 600px;
+  background: green;
+}
+table tr:nth-child(odd) td {
+  background: rgb(181, 236, 190);
+}
+table tr:nth-child(even) td {
+  background: white;
+}
+textarea {
+  width: 100%;
+  height: 80%;
+  font-size: 20px;
+  line-height: 1.5;
+  display: block;
+}
+button {
+  display: flex;
+  justify-content: space-between;
+}
+#save,
+#cancel,
+#copy {
+  margin-top: 10px;
+  margin-right: 50px;
+  background-color: #0b0b27;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  min-height: 30px;
+  min-width: 120px;
+}
+#save:hover,
+#cancel:hover,
+#close:hover {
+  background-color: #002ead;
+  transition: 0.7s;
+}
+@media (max-width: 800px) {
+  .btn {
+    display: inline-block;
+  }
+  a,
+  td {
+    font-size: 25px;
+    line-height: 1.5;
+  }
+  th {
+    font-size: 25px;
+    font-weight: 600px;
+  }
+  table {
+    border: 1px solid black;
+    width: 100%;
+  }
+  #container{
+      margin-top: 60px;
+  }
+ 
+}

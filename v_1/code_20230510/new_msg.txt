@@ -1,0 +1,56 @@
+	//
+	//In future, check if a file json file containing Iquestionnaire is selected??
+	//
+	//Collect and check the data entered by the user sending the message.
+	async check(): Promise<boolean> {
+		//
+		//1. Collect and check the data that the user has entered.
+		//
+		//1.1. Collect and check the recipient
+		this.recipient = this.get_recipient();
+		//
+		//1.2 Get the message content
+		const message = this.get_element("msg");
+		this.message = (<HTMLInputElement>message).value;
+		//
+		//1.3.Collect the subject of the message
+		this.subject = this.get_input_value("subject");
+		//
+		//2. Save the data to the database.
+		const save = await this.mother.writer.save(this);
+		//
+		//3. Send the message text to the user(s).
+		const send = await this.mother.messenger.send(this);
+		//
+		return save && send;
+	}
+	//
+	//Extract the data that is needed for writing to the database as a label
+	//where a label is a tuple of five elements
+	//[dbname,ename,alias,cname,expression]
+	get_layouts(): Array<quest.layout> {
+		return [...this.yield_layout()];
+	}
+
+	*yield_layout(): Generator<quest.layout> {
+		//
+		//Get the user creating the message
+		yield ["mutall_users", "msg", [], "user", this.user_pk!];
+		//
+		//Get the name of the organization. The name of an organization can be obtained
+		//from the application at login time
+		yield ["mutall_users", "msg", [], "business", this.business_pk!];
+		//
+		//The date associated with a message
+		yield ["mutall_users", "msg", [], "date", this.date!];
+		//
+		//The subject of the message
+		yield ["mutall_users", "msg", [], "subject", this.subject!];
+		//
+		//The text associated with a message
+		yield ["mutall_users", "msg", [], "text", this.message!];
+		//
+		//If applicable, get the event attached to that message
+		if (this.planner !== undefined)
+			yield ["mutall_users", "event", [], "name", this.planner.event_name!];
+	}

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Josh</title>
+    <style>
+        *{
+    font-family: sans-serif;
+    margin: 0px;
+    font-size: 18px;
+    }
+    .header{
+        padding-top: 20px;
+        height: 30%;
+        background-color: gray;
+        text-align: center;
+        padding-bottom: 20px;
+    }
+    .header img{
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+    }
+    .header #name{
+        margin-top: 20px;
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        font-size: 25px;
+        margin-bottom: 20px;
+        color: white;
+    }
+    a{
+        color: white;
+    }
+    a:hover {
+        color: rgb(230, 17, 53);
+        transition: ease-in-out 0.5s;
+    }
+    .body{
+        padding-left: 20px;
+    }
+    .body #proj_name{
+        font-size: 40px;
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+    .body details{
+        margin-bottom: 10px;
+    }
+    .body summary{
+        margin-bottom: 10px;
+        color: blue;
+        font-weight: bolder;
+    }
+    li{
+        margin-bottom: 5px;
+    }
+    .footer{
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: rgb(95, 93, 93);
+        height: 7%;
+        padding-top: 20px;
+    }
+    .footer p{
+        text-align:center;
+        color: white;
+    }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header_container">
+            <img src="https://drive.google.com/uc?export=view&id=1w0e0teKxzcWCeA0i2-Nl38W4adkg2BF4"  alt="my_pic" id="profile_photo" >
+            <p id="name">Joshua Samuel Omondi</p>
+        </div>
+        <div class="links">
+            <a href="" title="linkedin"><i class="fa fa-linkedin" style=" margin-right: 10px;font-size: 25px; "></i></a>
+            <a href="https://github.com/SamGombs20" title="github"><i class="fa fa-github" style="font-size: 25px;"></i></a>
+        </div>
+    </div>
+    <div class="body">
+        <p id="proj_name">Registrar</p>
+        <div class="description">
+            <details>
+                <summary>Description</summary>
+                <ul>
+                    <li>A registration system for a multi-business.</li>
+                </ul>
+            </details>
+        </div>
+        <div class="problem">
+            <details>
+                <summary>Problem</summary>
+                <ul>
+                  <li>Most of the registration systems of today are single-business oriented.</li>  
+                  <li>There are scarcely any multi-businesses registration systems.</li>
+                </ul>
+            </details>
+        </div>
+        <div class="plan">
+            <details>
+                <summary>Plan</summary>
+                <ul>
+                    <li>Simple registration and log in forms</li>
+                    <li>Registration to be one-time for users of sub-systems of the multi-business.</li>
+                    <li>Logging in to be user-centric that is, the user should be able to choose which system of the multi-business that they want to interact with.</li>
+                    <li>Proper record-keeping of users of the sub-systems used by the multi-business</li>
+                </ul>
+            </details>
+        </div>
+        <div class="outcome">
+            <details>
+                <summary>Outcome</summary>
+            <ul>
+                <li>A working web application that allows for registration of users in a multi-business scenario.</li>
+            </ul>
+            </details>
+        </div>
+    </div>
+    <div class="footer">
+        <p><i class="fa fa-copyright" style="color: white; margin-right: 5px;"></i>2023</p>
+    </div>
+</body>
+</html>

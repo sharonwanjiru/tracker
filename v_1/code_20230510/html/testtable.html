@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="general.css">
+    <title>Table</title>
+</head>
+<body>
+    <legend>Level Of Education</legend>
+        <table id="certificate" style="width: 100%;">
+            <thead>
+                <th data-dbname="mutall_tracker" data-ename="certificate" data-cname="name">
+                    Education Level
+                </th>
+                <th data-dbname="mutall_tracker" data-ename="certificate" data-cname="institute">
+                    Institute attended</th>
+                <th data-dbname="mutall_tracker" data-ename="certificate" data-cname="start_date">
+                    Start date</th>
+                <th data-dbname="mutall_tracker" data-ename="certificate" data-cname="end_date">
+                    End date</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-cname="name">
+                        <input type="text" data-dbname="mutall_tracker" data-ename="certificate" data-cname="name" placeholder="E.g., Highschool/College" value="Degree">
+                    </td>
+                    <td>
+                        <input type="text" data-dbname="mutall_tracker" data-ename="certificate" data-cname="institute" value="Technical University">
+                    </td>
+                    <td>
+                        <input type="text" data-dbname="mutall_tracker" data-ename="certificate" data-cname="start_date" Value="04/2/2018">
+                    </td>
+                    <td>
+                        <input type="text" data-dbname="mutall_tracker" data-ename="certificate" data-cname="end_date" value="08/10/2021">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" value="Diploma">
+                    </td>
+                    <td>
+                        <input type="text" value="Kenyatta university">
+                    </td>
+                    <td>
+                        <input type="text" value="03/04/2017">
+                    </td>
+                    <td>
+                        <input type="text" value="23/11/2020">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+    <button id="go">Go</button>
+    <button id="cancel">Cancel</button>
+</body>
+</html>

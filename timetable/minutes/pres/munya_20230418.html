@@ -1,0 +1,125 @@
+<p>Suggestion/Notes</p>
+<h2>General</h2>
+<h3>18-04-2023</h3>
+<ul>
+<li>check on your minutes to make sure you are following it</li>
+</ul>
+<h2>portfolio</h2>
+<h3>Before</h3>
+<ul>
+<li>[x]Have a column in the portfolio table to reflect problems and a another on how to solve them</li>
+<li>[x]Have technologies you will use in the last column of the table.</li>
+<li>[x]Do media query on your portfolio</li>
+</ul>
+<h3>21-03-2023</h3>
+<ul>
+<li>[x]The portfolio to be refurbished and using the css as Muli</li>
+<li>[]show us how you have solved the problems on the portfolio(case study)</li>
+</ul>
+<h3>28-03-2023</h3>
+<ul>
+<li>[]Add a portfolio called backend development.</li>
+</ul>
+<h2>Image Processing</h2>
+<h3>Before</h3>
+<ul>
+<li>[x]Major problem was to manage all the photos and videos in the ceremony.</li>
+<li>[x]Get audios for the songs listed in the site.</li>
+<li>[x]Have the audios be a part of images. -[ ] Have a 3 section for your website;<ul>
+<li>Navigation side bar.</li>
+<li>Website content</li>
+<li>Video and audio.</li>
+</ul>
+</li>
+<li>[ ]How will the application show the images has been added.</li>
+<li>[ ]Show some restrictions like size and quality</li>
+<li>[x]Make the conributions autoplay instead of scrolling.</li>
+<li>[x]Check the background on the image on the body, it is obstructing visibility</li>
+<li>[ ]Fix the Navigation</li>
+<li>[x]Remove the bullets and add buttons</li>
+<li>[ ]Make an interactive UI</li>
+<li>[ ]Make the song match</li>
+<li>[x]Deploy to digital ocean</li>
+<li>[x]Work on the sound</li>
+<li>[x]For the navigation, when you go to a page it highlights</li>
+<li>[x]Make sure the videos autoplay when 100 percent visible</li>
+<li>[ ]On the server, the videos are not playing-deployment issues</li>
+<li>[ ]Add animations on list of contributors</li>
+</ul>
+<h3>21-03-2023</h3>
+<ul>
+<li>[ ]Identify like 5 case studies- report on the Kaurai ceremony, kibiko wedding, chama and highlight the techniques for processing e.g photoshop</li>
+</ul>
+<h3>28-03-2023</h3>
+<ul>
+<li>[ ]figure out the shape and image cropping on clip path so that you can identify the image path.</li>
+<li>[] Change to chama contributors management</li>
+<li>[ ]Use metavisio(carol's) to see how the database model looks like</li>
+<li>[ ]Use Carol's list of contributors to your application</li>
+<li>[ ]Start creating a database for your images</li>
+<li>[ ]on you image db create the following fields: image, url, description</li>
+</ul>
+<h2>Livestock Management</h2>
+<ul>
+<li>[ ]Add what a user wants with the livestock e.g slaughtering</li>
+<li>[ ]Add tables for slaughter people,transporters and feed suppliers</li>
+<li>[ ]visit livestock market to help database design</li>
+<li>[ ]should have a search functionality</li>
+</ul>
+<h3>21-03-2023</h3>
+<ul>
+<li>[ ]for each traders,sellers try to find a specific problem</li>
+<li>[ ]Do more research and give as a report<ul>
+<li>visit 3 times a week(regular visits)</li>
+<li>visit Ken(chic joint), Dr. Gathur</li>
+</ul>
+</li>
+<li>[ ]What is it that the system that does, look what it doesn't</li>
+<li>[ ]keep a directory of the people you contact
+-establish relationship</li>
+<li>[ ]Take photos of the forms to help identify gaps</li>
+</ul>
+<h2>Database Modelling</h2>
+<h3>04-04-2023</h3>
+<p>mobile</p>
+<ul>
+<li>code : string(3)254</li>
+<li>num : string(10)</li>
+<li>primary:tinyint:null</li>
+</ul>
+<p>member</p>
+<ul>
+<li>name:string(10)</li>
+<li>fullname:string(50)</li>
+</ul>
+<p>membership(abstract table)</p>
+<ul>
+<li>startdate : datetime</li>
+<li>enddate : datetime</li>
+</ul>
+<p>Beneficiary</p>
+<ul>
+<li>no attribute, it has two links one to membership and contributor</li>
+<li>It has identifiers: which member?, what is the contribution</li>
+<li>beneficiary is different from contributor</li>
+</ul>
+<p>Contribution</p>
+<p>-amount:number
+-mpesacode</p>
+<ul>
+<li>to uniquely identify a contribution, you use the event.The event is not sufficient hence you need also a member.MpesaCode is not suitable because a person can have two contributions e.g 250 today and 250 tomorrow(rare case).</li>
+</ul>
+<p>Contributor</p>
+<ul>
+<li>Just like the beneficiary ,it links to membership</li>
+</ul>
+<p>Event</p>
+<ul>
+<li>name</li>
+<li>description</li>
+<li>date<ul>
+<li>the event is linked to the contribution</li>
+<li>One event can have many contributions</li>
+</ul>
+</li>
+</ul>

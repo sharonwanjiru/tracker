@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>View Minutes</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="minutes.css" />
+    <script type="module">
+        // Import the view_minutes and create_minute functions from JavaScript files
+        import { view_minutes } from "./view_minutes.js";
+        import { create_minute } from "./editor.js";
+        //
+        // Load the minutes for viewing
+        view_minutes();
+        
+        //
+        // Making 
+        window.create_minute=create_minute;
+    </script>
+    
+  </head>
+  <body>
+    <!--    Adding the header division-->
+      <header>
+            <nav class="navbar">
+              <!--   Navigation bar items-->
+              <ul class="nav-menu">
+                <li class="nav-item">
+                  <button id ="create" class="nav-link"  onclick  ="create_minute()">Create Minute</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link">Submit Minute</button>
+                </li>
+              </ul>
+            </nav>
+            <div class="hamburger">
+              <span class="bar"></span>
+              <span class="bar"></span>
+              <span class="bar"></span>
+            </div>
+      </header>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Date</th>
+            <th>View</th>
+            <th>Edit</th>
+            <th>Copy</th>
+            <th>Copy View</th>
+          </tr>
+        </thead>
+        <tbody id="body"></tbody>
+      </table>
+  </body>
+</html>

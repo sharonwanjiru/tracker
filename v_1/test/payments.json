@@ -1,0 +1,18 @@
+[
+    {
+        "classname": "mutall\\capture\\fuel",
+        "args" : [
+            "payments",
+            "amount,bank, date, description, ref, type, client",
+            "data"
+        ]
+    },
+
+    ["mutallco_rental", "payments", [], "amount", ["mutall\\capture\\lookup","payment","amount"]],
+    ["mutallco_rental", "payments", [], "bank", ["mutall\\capture\\lookup","payment","bank"]],
+    ["mutallco_rental", "payments", [], "date", ["mutall\\capture\\lookup","payment","date"]],
+    ["mutallco_rental", "payments", [], "description", ["mutall\\capture\\lookup","payment","description"]],
+    ["mutallco_rental", "payments", [], "ref", ["mutall\\capture\\lookup","payment","ref"]],
+    ["mutallco_rental", "payments", [], "type", ["mutall\\capture\\lookup","payment","type"]],
+    ["mutallco_rental", "client", [], "name", ["mutall\\capture\\lookup","payment","client"]]
+]

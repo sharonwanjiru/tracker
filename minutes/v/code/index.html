@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>View Minutes</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="minutes.css">
+        <script type="module">
+            //
+            //Impoprt theview minures function from a ajavscript file
+            import {view_minutes} from "./view_minutes.js";
+            //
+            //Load the minutes for viewing
+            view_minutes();
+        </script>    
+    </head>
+    <body>
+         <table>
+            <thead> 
+                <tr>
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>View</th>
+                    <th>Edit</th>
+                    <th>Copy</th>
+                </tr>
+            </thead>
+            <tbody id="body">
+                
+            </tbody>
+        </table>
+    </body>
+</html>
