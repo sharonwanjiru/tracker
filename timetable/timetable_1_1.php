@@ -87,7 +87,7 @@ $days = $dbase->get_sql_data($sql);
                 //current date
                  $current_day = date('l');
 
-                //Get the name of the dat
+                //Get the name of the date
                 $day_name = $day['name'];
 
                     // Check if the current day matches the day in the loop
