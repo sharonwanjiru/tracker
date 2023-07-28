@@ -3,12 +3,11 @@ select
     json_arrayagg(
         json_object(
             'date', presentation.date,
-            'presentation',presentation.presentation,
-            'file', file.name
+            'presentation',presentation.presentation
         )
     ) as details
 from 
     presentation
     inner join intern on intern.intern = presentation.intern
-    inner join file on file.file = presentation.`file`
+--     inner join file on file.file = presentation.`file`
 group by surname ;

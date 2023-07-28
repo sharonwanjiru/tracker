@@ -7,11 +7,11 @@ import * as server from "./../../../schema/v/code/server.js";
 //The deseired structire of the data for project
 type project = {
     name:string,
-    presentations: Array<presentation>
+    presentations: Array<presentations>
 }
 
 //The desired structire of the data for a presenttaion
-type presentation = {
+type presentations = {
    presentation:number
    date:string,
    file:string
@@ -19,12 +19,11 @@ type presentation = {
 
 //
 //Thus cass is for managing mainutes
-export class minutes extends page{
+export class presentation extends page{
     //
     constructor(){
         super();
     }
-    
     //Override the show panels method
     public async show_panels(): Promise<void>{
         //
@@ -49,7 +48,7 @@ export class minutes extends page{
     private async get_minutes():Promise<Array<{surname:string, projects:string}>>{
         //
         //Get the sql to run
-        const str = 'minutes.sql';
+        const str = '/tracker/v/code/presentation.sql';
         //
         return await server.exec(
             'database',
@@ -88,7 +87,7 @@ export class minutes extends page{
     private show_intern(intern:{surname:string, projects:string}, anchor:HTMLElement):void{
         //
         //1. Clarify the contents of the projects (json) string
-        const projects:Array<{name:string, presentations:Array<presentation>}> = JSON.parse(intern.projects);
+        const projects:Array<{name:string, presentations:Array<presentations>}> = JSON.parse(intern.projects);
         //
         //Create details tag and append it to the anchor
         const details:HTMLDetailsElement = this.create_element('details', anchor, {className:'presenter'});
