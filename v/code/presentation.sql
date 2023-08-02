@@ -23,6 +23,7 @@ with
     # 1. Extract the raw data 
     raw as (
         select
+            intern.intern,
             presentation.presentation,
             intern.surname,
             presentation.date 
@@ -37,8 +38,9 @@ with
     # {presentation:number,date:string}
     presentation as(
         select 
-            json_object('presentation',presentation,'date',date) as presentation,
-            surname
+            surname,
+            intern,
+            json_object('presentation',presentation,'date',date,'surname',surname) as presentation
         from
             raw
     ),
@@ -48,12 +50,13 @@ with
     # { surname:string, presentations: Array<presentation>}
     intern as(
         select
+            intern,
             surname,
             json_arrayagg(presentation) as presentations
         from
             presentation
-        group by surname
+        group by surname,intern
     )
     #
     # 3. Export the results
-    select * from intern ;
+    select * from intern;

@@ -1,1 +1,74 @@
+/*Change the font of the body to a san-serif font and remove default margin*/
+body {
+    margin: 0;
+    height:100%;
+    font-family: Arial, Helvetica, sans-serif;
+}
+/*Define the grid areas by defining the column and row grid templates*/
+.container {
+    display: grid;
+    grid-template-rows: auto 80% 10%; 
+    grid-template-columns: 20% 80%; 
+    min-height: 100vh;
+    grid-template-areas:
+      "mid_header mid_header"
+      "nav content"
+      "nav footer";
+}
+/*Give #mid_header to the grid-area mid_header*/
+#mid_header {
+    grid-area: mid_header; 
+    background-color: lightgray; 
+    padding: 10px; 
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+}
+/*Give the nav_mobile for the mobile view a more visible font*/
+#nav_mobile{
+    font-size: 20px;
+    font-weight: 600;
+}
+/*Give #nav to the grid-area nav*/
+#nav {
+    grid-area: nav; 
+    background-color: lightblue; 
+    padding: 10px; 
+}
+/*Give #content to the grid area content, give a background coloe and padding*/
+#content {
+    grid-area: content;
+    background-color: whitesmoke; 
+    padding: 10px; 
+}
+#footer{
+    background-color: lightgrey;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+}
+/*Increase the size of presenter class, increase distance between them 
+and weight to normal*/
+.presenter{
+    font-size:  20px;
+    line-height: 1.5;
+    font-weight:300;
+}
+/*Give all the prsentation dates blue color and reduce font size*/
+.presenter div{
+   color: blue;
+   font-size: 16px;
+   margin-left: 10px;
+   cursor: pointer;
+}
+/*Give the date division a hover for more visibility*/
+.presenter div:hover{
+     text-decoration: underline;
+     transform: scale(1.1);
+}
+/*Increase the margin of the presenter class below mid_header to distinguish them 
+by placing them on a different level */
+#mid_header .presenter{
+    margin-left: 20px;
+}
 

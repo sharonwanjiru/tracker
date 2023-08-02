@@ -98,3 +98,33 @@ export class presentation extends page {
         // Create the P tag and give it class presentation     
     }
 }
+import { minute } from "./minute.js";
+//
+//Thus cass is for managing mainutes
+export class minutes extends page {
+    //
+    constructor() {
+        super();
+    }
+    //
+    //
+    async show_minutes(surname, date) {
+        // Create an instance of a minute
+        // 
+        const M = new minute(surname, date);
+        //
+        // Run the show_panel method of the minutes instance
+        await M.show_panels();
+    }
+}
+//
+//Thus cass is for managing mainutes
+export class minutes extends page {
+    //
+    constructor() {
+        super();
+    }
+    show_minutes() {
+        alert("Waiting for Mogaka");
+    }
+}

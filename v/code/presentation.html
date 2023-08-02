@@ -5,33 +5,37 @@
     <title>View Minutes</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
+
     <link rel="stylesheet" type="text/css" href="presentation.css" />
-    
+
     <script type="module">
-        //
-        // Import the view_minutes and create_minute functions from JavaScript files
-        import { presentation } from "./presentation.js";   
-        //
-        const Presentation = new presentation();
-        //
-        //Exposing the minutes variable to be accessibe in HTML
-        window.Presentation=  Presentation;
-        //
-        //Exwcute the standard method for showng panels of a page
-        await Presentation.show_panels();        
+      //
+      // Import the view_minutes and create_minute functions from JavaScript files
+      import { presentation } from "./presentation.js";
+      //
+      const Presentation = new presentation();
+      //
+      //Exposing the minutes variable to be accessibe in HTML
+      window.Presentation = Presentation;
+      //
+      //Exwcute the standard method for showng panels of a page
+      windows.onload = async()=>await Presentation.show_panels();
     </script>
-    
   </head>
   <body>
-    <!--    Adding the header division-->
-      <div id="mid_header"> 
-          <details id="nav_mobile">
-              <summary>Navigate Minutes</summary>     
-          </details>
-      </div>
-      <p>End of mobile view</p>
-      <div id="nav"></div> 
-      <div id="content"></div>
+    <div class="container">
+        <!--Adding the header division-->
+        <div id="mid_header">
+            <details id="nav_mobile">
+              <summary>Navigate Minutes</summary>
+            </details>
+        </div>
+        <!--Add the left navigation panel-->
+        <div id="nav"></div>
+        <!--Add the content area-->
+        <div id="content"><p>Hello</p></div>
+        <!--Add the footer-->
+        <div id="footer"><p>Developed by Sharon and Mogaka</p></div>
+    </div>
   </body>
 </html>

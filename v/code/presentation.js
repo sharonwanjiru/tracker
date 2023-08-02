@@ -1,13 +1,19 @@
 //Import the page class from outtlook
 import { page } from "./../../../outlook/v/code/view.js";
+import { minute } from "./minutes.js";
 //Execute PHP methods from javascript
 import * as server from "./../../../schema/v/code/server.js";
 //
 //Thus cass is for managing mainutes
 export class presentation extends page {
     //
+    //Link to mogakas minutes class
+    minutes;
+    //
     constructor() {
         super();
+        //
+        this.minutes = new minute();
     }
     //Override the show panels method
     async show_panels() {
@@ -78,12 +84,20 @@ export class presentation extends page {
         const details = this.create_element('details', anchor, { className: 'presenter' });
         //
         //Create the summary tag (with surname content) and attach it to the details tag
-        const summary = this.create_element('summary', details, { textContent: surname });
+        this.create_element('summary', details, { textContent: surname });
         //
         //Output the presentaions, one by one, attaching them to the details
-        presentations.forEach(presentation => 
+        presentations.forEach(p => this.show_presentation(p, details));
+    }
+    /*
+     <div onclick='mogaka.show_minutes($pk)'> $date </div>
+     */
+    show_presentation(p, anchor) {
         //
-        //Create the p tag  and attach to the detail
-        this.create_element('p', details, { textContent: presentation.date }));
+        //Create the div tag
+        const div = this.create_element('div', anchor, { textContent: p.date });
+        //
+        //Attach the mokaga'seven
+        div.onclick = () => this.minutes.show_minutes(p.surname, p.date);
     }
 }

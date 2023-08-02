@@ -1,32 +1,41 @@
 //Import the page class from outtlook
 import {page} from "./../../../outlook/v/code/view.js";
 
-//The project interface was delevopled by mogaka; hence the namespace
-import * as mogaka from "./project.js";
+import {minute} from "./minutes.js";
 
 
 //Execute PHP methods from javascript
 import * as server from "./../../../schema/v/code/server.js";
 
-type intern = {
-    intern:number,
-    surname:string, 
-    presentations:Array<Ipresentation>
-};
+type intern = {surname:string, presentations:Array<Ipresentation>};
 
 //The desired structire of the data for project
 type Ipresentation = {
-    presentation:number,
     date:string,
     surname:string
 }
 
 //
-//Thus cass is for managing liss of presenttaions
-export class presentations extends page{
+//Thus cass is for managing mainutes
+export class presentation extends page{
     //
-    constructor(){
+    //Link to mogakas minutes class
+    public minutes:minute;
+    //
+    constructor(surname:string,date:string){
         super();
+        //
+       this.minutes = new minute(surname,date); 
+    }
+    //
+    // 
+    public async show_minutes(surname:string,date:string): Promise<void>{
+        // Create an instance of a minute
+        // 
+        const M = new minute(surname,date);
+        //
+        // Run the show_panel method of the minutes instance
+        await M.show_panels();
     }
     //Override the show panels method
     public async show_panels(): Promise<void>{
@@ -56,7 +65,7 @@ export class presentations extends page{
         const str = '/tracker/v/code/presentation.sql';
         //
         //Execute the esql and get the database rows
-        const rows:Array<{intern:number,surname:string, presentations:string}> = await server.exec(
+        const rows:Array<{surname:string, presentations:string}> = await server.exec(
             'database',
             ['tracker_mogaka'],
             'get_sql_data',
@@ -64,7 +73,7 @@ export class presentations extends page{
         );
         //
         //Convert the resuting rows to an array of interns
-        const interns: Array<intern> = rows.map(row => ({intern: row.intern,surname: row.surname, presentations: JSON.parse(row.presentations)}));
+        const interns: Array<intern> = rows.map(row => ({surname: row.surname, presentations: JSON.parse(row.presentations)}));
         //
         //Return the interns
         return interns; 
@@ -116,16 +125,10 @@ export class presentations extends page{
     private show_presentation(p:Ipresentation, anchor:HTMLElement){
         //
         //Create the div tag
-        const div:HTMLElement = this.create_element('div', anchor, {textContent:p.date});
-        //
-        //get the contemtent anchor tag
-        const content:HTMLElement = this.get_element('content');
-        //
-        //Get mogakas project
-        const project = new mogaka.project(p.presentation, content);
+        const div:HTMLElement = this.create_element('div', anchor, {textContent:p.date})
         //
         //Attach the mokaga'seven
-        div.onclick = async() => await this.project.show_panels();
+        div.onclick = () => this.minutes.show_minutes(p.surname, p.date);
     }
     
 }

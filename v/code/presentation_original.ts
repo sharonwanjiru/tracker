@@ -128,3 +128,48 @@ export class presentation extends page{
     }
     
 }
+
+
+
+//Import the page class from outtlook
+import {page} from "./../../../outlook/v/code/view.js";
+import {minute} from "./minute.js";
+//
+//Thus cass is for managing mainutes
+export class minutes extends page{
+    //
+    constructor(){
+        super();
+      
+    }
+    //
+    //
+    public async show_minutes(surname:string,date:string): Promise<void>{
+        // Create an instance of a minute
+        // 
+        const M = new minute(surname,date);
+        //
+        // Run the show_panel method of the minutes instance
+        await M.show_panels();
+    }
+}
+
+
+
+//Import the page class from outtlook
+import {page} from "./../../../outlook/v/code/view.js";
+
+//
+//Thus cass is for managing mainutes
+export class minutes extends page{
+    //
+    constructor(){
+        super();
+      
+    }
+    
+    public show_minutes(): void{
+        alert("Waiting for Mogaka");
+    }
+}
+
