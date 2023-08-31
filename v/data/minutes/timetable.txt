@@ -1,0 +1,49 @@
+,
+
+    #
+    #5. Assigning boolean values
+    presenter as (
+        select 
+            raw.day_code,           
+            raw.intern,
+        case
+            when next_presenter.surname = raw.surname then true
+            else false
+        end as is_presenter
+        from
+            next_presenter
+            right join raw on raw.surname = next_presenter.surname
+        order by code
+    ),
+    #
+    # 6. Summarize the intern
+    #
+    # 6.1 Package intern details as follows
+    # intern ={surname:string, image:string, university:string, year:string,
+    # is_presenter:boolean}
+    intern as(
+        select
+            raw.code,
+            raw.day as name,
+            json_object('surname',raw.surname,'image',raw.image,'university',raw.university,
+            'year',raw.year,'presenter',presenter.is_presenter) as intern
+        from
+            raw
+            left join presenter on presenter.surname = raw.surname
+            order by code
+    ),
+    #
+    # 7. Summarize the day
+    #
+    # 7.1 Package day details as follows
+    # day ={name:string,interns:Array<intern>}
+    day as(
+        select
+            code,
+            name,
+            json_arrayagg(intern) as interns
+        from
+            intern
+        group by name
+    )
+    select * from day;

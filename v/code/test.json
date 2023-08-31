@@ -1,0 +1,111 @@
+[{
+        "name": "Andrew Mugambi",
+        "year": 2016,
+        "image": "http://206.189.207.206/tracker/portfolio/2023/image/drew.jpg",
+        "surname": "mugambi",
+        "presenter": 0,
+        "university": "African Nazarene University",
+        "presentation": null,
+        "qualification": "Bsc. Business Information Technology"
+    }, {
+        "name": "George Kangara",
+        "year": 2019,
+        "image": "http://206.189.207.206/tracker/portfolio/2023/kangara.html",
+        "surname": "kangara",
+        "presenter": 1,
+        "university": "Meru University",
+        "presentation": [{
+                "date": "2023-05-08",
+                "presentation": 23
+            }, {
+                "date": "2023-05-29",
+                "presentation": 32
+            }, {
+                "date": "2023-05-22",
+                "presentation": 34
+            }, {
+                "date": "2023-06-12",
+                "presentation": 39
+            }],
+        "qualification": "Bsc Computer Technology"
+    }, {
+        "name": "Isaac Waweru",
+        "year": 2019,
+        "image": "http://206.189.207.206/tracker/portfolio/image/weru.jpg",
+        "surname": "waweru",
+        "presenter": 0,
+        "university": "Dedan Kimathi University of Technology",
+        "presentation": null,
+        "qualification": "Bsc. Mechatronics Engineering"
+    }, {
+        "name": "Simon Mwangi",
+        "year": 2023,
+        "image": null,
+        "surname": "karanja",
+        "presenter": 0,
+        "university": "Cooperative University",
+        "presentation": null,
+        "qualification": "Diploma in IT"
+    }, {
+        "name": "James Oyondi",
+        "year": 2024,
+        "image": null,
+        "surname": "mogaka",
+        "presenter": 0,
+        "university": "Dedan Kimathi University of Technology",
+        "presentation": null,
+        "qualification": "Bsc. Computer Science"
+    }]
+[{
+"name": "Andrew Mugambi",
+        "year": 2016,
+        "image": "http://206.189.207.206/tracker/portfolio/2023/image/drew.jpg",
+        "presenter": 0,
+        "university": "African Nazarene University",
+        "presentation": null,
+        "qualification": "Bsc. Business Information Technology"
+}, {
+"name": "George Kangara",
+        "year": 2019,
+        "image": "http://206.189.207.206/tracker/portfolio/2023/kangara.html",
+        "presenter": 1,
+        "university": "Meru University",
+        "presentation": [{
+        "date": "2023-05-08",
+                "intern": 6
+        }, {
+        "date": "2023-05-29",
+                "intern": 6
+        }, {
+        "date": "2023-05-22",
+                "intern": 6
+        }, {
+        "date": "2023-06-12",
+                "intern": 6
+        }],
+        "qualification": "Bsc Computer Technology"
+}, {
+"name": "Isaac Waweru",
+        "year": 2019,
+        "image": "http://206.189.207.206/tracker/portfolio/image/weru.jpg",
+        "presenter": 0,
+        "university": "Dedan Kimathi University of Technology",
+        "presentation": null,
+        "qualification": "Bsc. Mechatronics Engineering"
+}, {
+"name": "Simon Mwangi",
+        "year": 2023,
+        "image": null,
+        "presenter": 0,
+        "university": "Cooperative University",
+        "presentation": null,
+        "qualification": "Diploma in IT"
+}, {
+"name": "James Oyondi",
+        "year": 2024,
+        "image": null,
+        "presenter": 0,
+        "university": "Dedan Kimathi University of Technology",
+        "presentation": null,
+        "qualification": "Bsc. Computer Science"
+}]

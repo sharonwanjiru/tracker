@@ -1,7 +1,7 @@
 /*
 
 The days represents the results I want to export. The description is done using
-Tyoescript data types
+Typescript data types
 
 type days = Array<Iday>;
 
@@ -12,11 +12,17 @@ type Iday = {
 
 type Iintern = {
     intern:number,
-    surname:string,
+    name:string,
     photo:string,
     university:string,
     year:string,
-    presenter:number|null
+    presenter:boolean
+    presentations: Array<Ipresentation>;
+}
+
+type Ipresentation ={
+    presentation: number;
+    date: string
 }
 For the presenter:
 //
@@ -39,7 +45,8 @@ We shall summarize the presentations by json encoding
 */
 
 with
-    # 1.extract the raw data,including the day code
+    # 1.extract the raw data,including the day code which represents the days of the week
+    
     raw as(
         select
             intern.intern,
@@ -51,16 +58,19 @@ with
                 WHEN 'Thursday' THEN 4
                 WHEN 'Friday' THEN 5
             END as day_code,
+            intern.name,
             intern.surname,
             intern.image,
             intern.university,
             intern.qualification,
             intern.year
         from
-            intern
+            intern  
+            order by day_code
     ),
     #
-    # 2. Get the maximum presentation date for all interns
+    # 2. Get the maximum presentation date for all interns from the presentation dates
+    # to get the most recent presentation for all interns in a day
     max_presentation as (
         select
             raw.day_code,
@@ -73,7 +83,8 @@ with
         order by raw.day_code
     ),
     #
-    # 3. Get the minimum presentation dates from the maximum
+    # 3. Get the minimum presentation dates from the max_presentation to get the 
+    # presenter with the earliest day within a day as the next presenter
     min_presentation as (
         select
             max_presentation.day_code,
@@ -83,7 +94,7 @@ with
         group by max_presentation.day_code
     ), 
     #
-    # 4.Get the next presenterr surname and assign boolean values
+    # 4.Get the next presenter surname 
     next_presenter as (
         select
             min_presentation.day_code,
@@ -93,22 +104,35 @@ with
             inner join max_presentation on min_presentation.day_code = max_presentation.day_code 
             and min_presentation.date = max_presentation.date
     ),
-
-    # 5. Add the presenter to the raw data
+    #
+    # 5. Get all interns with presentations and their presentation dates
+    presentation as (
+        select
+            intern,
+            json_arrayagg(json_object('presentation',presentation,'date',date)) as presentations
+        from
+            presentation
+        group by intern
+    ),
+    # 6. Add the presenter andpresentation dates to the raw data
     raw_2 as (
         select
             raw.intern,
             raw.day,
             raw.day_code,
             raw.surname,
+            raw.name,
             raw.image,
             raw.university,
             raw.qualification,
             raw.year,
-            max_presentation.intern as is_presenter
+            case when next_presenter.intern is not null then true else false end as is_presenter,
+            presentation.presentations
         from
             raw
-            left join max_presentation on max_presentation.intern = raw.intern
+            left join next_presenter on next_presenter.intern = raw.intern
+            left join presentation on presentation.intern = raw.intern
+        order by day_code
     ),
     #
     # 6. Summarize the intern
@@ -118,13 +142,13 @@ with
     # is_presenter:boolean}
     intern as(
         select
-            day_code,
-            day as day_name,
-            json_object('intern',surname,'surname',surname,'image',image,'university',university,
-            'year',year,'presenter',is_presenter) as intern
+            raw_2.day_code,
+            raw_2.day as day_name,
+            json_object('name',name,'surname',surname,'image',image,'qualification',qualification,
+            'university',university,'year',year,'presenter',is_presenter,'presentations',presentations) as intern
         from
             raw_2
-            order by day_code
+        order by day_code
     ),
     #
     # 7. Summarize the day
@@ -135,10 +159,11 @@ with
         select
             day_code,
             day_name,
-            json_arrayagg(intern)
+            json_arrayagg(intern) as interns
         from
             intern
         group by day_code,day_name
+        order by day_code
     )   
     select * from day;
 

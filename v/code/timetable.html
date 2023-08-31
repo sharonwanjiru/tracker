@@ -1,15 +1,40 @@
 <!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
--->
+
 <html>
-    <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+  <head>
+    <title>View Timetable</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" type="text/css" href="timetable.css" />
+
+    <script type="module">
+      //
+      // Import the timetable  from JavaScript files
+      import { timetable } from "./timetable.js";
+      //
+      window.onload = async()=>{
+        //
+        const Timetable = new timetable ();
+        //
+        //Exposing the timetable variable to be accessibe in HTML
+        window.Timetable = Timetable;
+        //
+        //Exwcute the standard method for showng panels of a page. 
+      await Timetable.show_panels();
+    };
+    </script>
+  </head>
+  <body>
+    <div class="container">
+        <div id="mid_header">
+            <details id="mobile">
+              <summary>Timetable</summary>
+            </details>
+        </div>
+        <div id="left"></div>
+        <div id="content"></div>
+        <div id="right_nav"></div>
+    </div>
+  </body>
 </html>

@@ -1,0 +1,62 @@
+/*Change the font of the body to a san-serif font and remove default margin*/
+body {
+    margin: 0;
+    height:100%;
+    font-family: Arial, Helvetica, sans-serif;
+}
+/*Define the grid areas by defining the column and row grid templates*/
+.container {
+    display: grid;
+    grid-template-rows: auto 90%; 
+    grid-template-columns: 30% 50% 20%; 
+    min-height: 100vh;
+    grid-template-areas:
+      "mid_header mid_header mid_header"
+      "left_nav content right_nav";
+}
+/*Give #mid_header to the grid-area mid_header*/
+#mid_header {
+    grid-area: mid_header; 
+    background-color: lightgray; 
+    padding: 10px; 
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+}
+/*Give the nav_mobile for the mobile view a more visible font*/
+#nav_mobile{
+    font-size: 20px;
+    font-weight: 600;
+}
+/*Give #left_nav to the grid-area left_nav*/
+#left {
+    grid-area: left_nav; 
+    background-color: lightblue; 
+    padding: 10px; 
+}
+#content {
+    grid-area: content;
+    background-color: whitesmoke; 
+    padding: 10px; 
+}
+#right_nav {
+    grid-area: right_nav; 
+    background-color: lightblue; 
+    padding: 10px; 
+}
+/*Testing the dummy data*/
+details{
+    font-weight: 600;
+}
+details details{
+    margin-left: 20px;
+    font-weight: 300;
+    line-height: 1.5;
+}
+.rounded-corners {
+  object-fit: cover;
+  width: 50px;
+  height: 50px;
+  border-radius: 160px;
+  overflow: hidden;
+}

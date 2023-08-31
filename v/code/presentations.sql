@@ -40,7 +40,7 @@ with
         select 
             surname,
             intern,
-            json_object('presentation',presentation,'date',date,'surname',surname) as presentation
+            json_object('presentation',presentation,'date',date) as presentation
         from
             raw
     ),

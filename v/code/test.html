@@ -1,0 +1,19 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View Markdown</title>
+    <script type="module">
+      //  
+      //importing a function from the editor.js
+      import { display_md } from "./extract.js";
+      
+      window.display_md = display_md;
+      
+    </script>
+</head>
+<body>
+
+<button id="view"  onclick  ="display_md()">View Markdown</button>
+</body>
+</html>

@@ -58,7 +58,7 @@ and weight to normal*/
 .presenter div{
    color: blue;
    font-size: 16px;
-   margin-left: 10px;
+   margin-left: 30px;
    cursor: pointer;
 }
 /*Give the date division a hover for more visibility*/
@@ -70,5 +70,20 @@ and weight to normal*/
 by placing them on a different level */
 #mid_header .presenter{
     margin-left: 20px;
+}
+@media (max-width: 800px) {
+   .container {
+    display: grid;
+    grid-template-rows: auto 80% 10%;
+    grid-template-columns:100%; 
+    min-height: 100vh;
+    grid-template-areas:
+      "mid_header"
+      "content"
+      "footer";
+}
+#nav{
+    display: none;
+}
 }
 
