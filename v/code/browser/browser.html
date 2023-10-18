@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Server</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type="module">
+            //
+            // Import the server_folders class
+            import { browser } from "./browser.js";
+            //
+            //Fund out why the onload evenits not fireing. It should after the
+            //entire document has loaded. It is not. Why?
+            window.onload = async()=>{
+                //
+                // Create an instance of the serverfolders class
+                const page = new browser('/tracker/v/code');
+                //
+                // Make the class visible outside the script
+                window.page = page;
+                //
+                await page.show_panels();
+            };
+  
+        </script>
+    </head>
+    <body >
+        <h2>Select a Folder</h2>
+        <div id="root"></div>
+    </body>
+</html>
