@@ -15,7 +15,7 @@ export class browser extends page {
     }
     //
     // This method is used to show the paths,i.e., filesand folders in the current
-    // server, startin from theroot folernamed inthe constructor.
+    // server, starting from theroot folernamed inthe constructor.
     // Below is a dummy of the expected output
     /*
   
@@ -96,14 +96,23 @@ class file extends path {
     constructor(parent, child) {
         //
         super(parent, child);
-        this.div = this.create_element("div", this.parent);
+        this.div = this.create_element("div", this.parent, { className: 'file' });
     }
     get proxy() { return this.div; }
     //Display a file, thus implementeing the abstarct version
     show() {
         //
-        // Attach the file name to the div
-        this.div.textContent = this.name;
+        // Create the file icon
+        const icon = this.create_element("img", this.div, { className: 'file_icon' });
+        //
+        // Add the image source
+        icon.src = "./icons/files.png";
+        //
+        // Create an element for the file name
+        const file_name = this.create_element("span", this.div, { className: 'file_name' });
+        //
+        // Attach the text content
+        file_name.textContent = this.name;
     }
 }
 //
@@ -113,6 +122,7 @@ class folder extends path {
     // The summary in which to attach a text???????
     summary;
     details;
+    text_span;
     //
     constructor(parent, child) {
         //
@@ -122,22 +132,32 @@ class folder extends path {
         // Create the details element
         this.details = this.create_element("details", this.parent);
         //
-        // Add event listener for the details icon
-        this.details.onclick = () => this.details_clicked(this.name);
+        // Add event listener for the details icon when opened
+        this.details.addEventListener("toggle", () => {
+            this.details_opened(this.name);
+        });
         //
         // Create the summary elements
         this.summary = this.create_element("summary", this.details);
+        // Create a <span> element to wrap the text within the summary
+        this.text_span = this.create_element("span", this.summary);
         //
-        // Add event listener for the summary text
-        this.summary.click = () => this.summary_clicked(this.name);
+        // Add event listener for the summary text when it is clicked
+        this.text_span.onclick = () => this.summary_clicked(this.name);
     }
     get proxy() { return this.details; }
     //
     // Define properties for the file class
     async show() {
         //
-        // Attach the folder name to the summary
-        this.summary.textContent = this.name;
+        // Create the file icon
+        const icon = this.create_element("img", this.summary, { className: 'folder_icon' });
+        //
+        // Add the image source
+        icon.src = "./icons/closed_folder.png";
+        //
+        // Display the text_contect oa a summary
+        this.text_span.textContent = this.name;
         //
         // Check if the folder has children 
         //const folder = await this.get_folders(this.full_name,false);
@@ -156,12 +176,28 @@ class folder extends path {
     }
     //
     // The event listener for the details icon
-    details_clicked(name) {
-        alert(`clicked on the detail icon of ${this.name}`);
+    details_opened(name) {
+        if (this.details.open) {
+            //
+            // Details opened
+            //
+            // Create the file icon
+            const icon = this.create_element("img", this.summary, { className: 'folder_icon' });
+            //
+            // Add the image source
+            icon.src = "./icons/opened_folder.png";
+            alert(`Details opened for ${name}`);
+        }
+        else {
+            //
+            // Details closed
+            alert(`Details closed for ${name}`);
+        }
     }
     //
     // The event listener for the summary text
     summary_clicked(name) {
-        alert(`clicked on the summary text of ${this.name}`);
+        //
+        alert(`clicked on the summary text of ${name}`);
     }
 }
