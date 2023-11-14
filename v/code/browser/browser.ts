@@ -57,10 +57,10 @@ export class browser extends page {
     //Get the child paths, i.e., files and folders, of the root foder.
     //N.B. The fisrt time round, the path isspecified without the document
     //root component, so, it neess to be adde
-    const paths: Array<Ipath> = await this.get_child_paths(this.root, true);
+    const Ipaths: Array<Ipath> = await this.get_child_paths(this.root, true);
     //
     //Add the children to the root node
-    paths.forEach((path) => this.create_and_show_path(root, path));
+    Ipaths.forEach(Ipath => this.create_and_show_path(root, Ipath));
   }
   //
   //Get the child folders of the given path and display them
@@ -92,9 +92,7 @@ export class browser extends page {
     // Create the path object
     if (Ipath.is_file) path = new file(parent, Ipath);
     else path = new folder(parent, Ipath);
-    //
-    //Show the path
-    path.show();
+    
   }
 }
 //
@@ -113,96 +111,79 @@ abstract class path extends view {
     this.full_name = child.path;
     this.name = child.name;
   }
-  //
-  // The show method must be implemented by extensions of this class
-  abstract show(): void;
+  
 }
 //
 // Class file displays the file contents
 class file extends path {
   //
-  public div: HTMLElement;
+  public proxy: HTMLElement;
 
   constructor(parent: HTMLElement, child: Ipath) {
     //
     super(parent, child);
-
-    this.div = this.create_element("div", this.parent, { className: "file" });
-  }
-
-  get proxy(): HTMLElement {
-    return this.div;
-  }
-
-  //Display a file, thus implementing the abstract version
-  show() {
+    //
+    this.proxy = this.create_element("div", this.parent, {
+        className: "file" 
+    });
     //
     // Create the file icon
-    const icon = this.create_element("img", this.div, {
+    this.create_element("img", this.proxy, {
       className: "file_icon",
+      src:"./icons/files.png"
     });
-    //
-    // Add the image source
-    icon.src = "./icons/files.png";
     //
     // Create an element for the file name
-    const file_name = this.create_element("span", this.div, {
+    this.create_element("span", this.proxy, {
       className: "file_name",
+      textContent:this.name
     });
-    //
-    // Attach the text content
-    file_name.textContent = this.name;
+    
+  }
+  
+  
+
+  
+  //Display a file, thus implementing the abstract version
+  show() {
+    
   }
 }
 //
 // Class folder displays the folder contents
 class folder extends path {
   //
-  // The summary in which to attach a text???????
-  private summary: HTMLElement;
-
-  private details: HTMLDetailsElement;
-
-  private text_span: HTMLElement;
-
-  //The chidren of this folder
-  private children?: Array<Ipath>;
-
-  //
+  public proxy:HTMLDetailsElement;  
+  
+  //The chidren of this folder are paths
+  private children?: Array<path>;
+   //
   constructor(parent: HTMLElement, child: Ipath) {
     //
     //Initialize the parent system
     super(parent, child);
     //
     // Create the details element
-    this.details = this.create_element("details", this.parent);
-    //
-    // Add event listener for the details icon when opened
-    this.details.ontoggle = () => {
-      //
-      // When toggled open, call the open method
-      if (this.details.open) this.open();
-    };
+    this.proxy = this.create_element("details", this.parent, {
+        ontoggle:() => {
+            //
+            // When toggled open, call the open method
+            if (this.proxy.open) this.open();
+        }
+    });
     //
     // Create the summary elements
-    this.summary = this.create_element("summary", this.details);
+    const summary = this.create_element("summary", this.proxy, {
+        textContent: this.name
+    });
+    
     // Create a <span> element to wrap the text within the summary
-    this.text_span = this.create_element("span", this.summary);
-    //
-    // Add event listener for the summary text when it is clicked
-    this.text_span.onclick = () => this.summary_clicked();
-    //
-    // Initialise this.children if it ois the first time
-    this.children = undefined;
+    this.create_element("span", summary, {
+        onclick:() => this.summary_clicked()
+    });
+       
   }
 
-  //
-  // Show this folder
-  async show() {
-    //
-    // Attach the folder name to the summary
-    this.summary.textContent = this.name;
-  }
   //
   //Populate this folder with her children if it is the first time.
   async open(): Promise<void> {
@@ -210,57 +191,53 @@ class folder extends path {
     //Do not continue with this process if the children are already available
     if (this.children !== undefined) return;
     //
-    //Scan the server for the childer of this folder
-    this.children = await this.get_folders(this.full_name, false);
+    //Scan the server for the children of this folder
+    this.children = await this.get_children();
     //
-    //Attach the children to this flder
-    this.children.forEach((child) => this.show_child(this.proxy, child));
-    //
-    //Markthis folder as having children
+    //Mark this folder as having children
     this.proxy.classList.add("has_children");
   }
-
-  show_child(parent: HTMLElement, child: Ipath) {
-    let path: path | undefined;
-    //
-    //  If the child is a file call the file class
-    if (child.is_file) path = new file(parent, child);
-    //
-    // If the child is a folder call the folder class
-    else path = new folder(parent, child);
-
-    path.show();
+  
+  //Retrieve the childern of this folder
+  async get_children():Promise<Array<path>>{
+     
+      //Scan the this folder for children (as Ipaths)
+       console.log(this.full_name);
+      const Ipaths: Array<Ipath> = await this.get_folders(this.full_name, false);
+     
+      
+      //
+      //The parent rootelement 
+      const parent = this.proxy;
+      //
+      //Convert the the child Ipaths to paths
+      const paths:Array<path> = Ipaths.map(
+        Ipath=>
+            Ipath.is_file 
+            ? new file(parent, Ipath)
+            : new folder(parent, Ipath)
+        );
+        //
+        //Return the paths
+        return paths; 
+     
   }
 
-  get proxy(): HTMLDetailsElement {
-    return this.details;
-  }
 
   //
   // Get the folders inside the parent folder
-  async get_folders(
-    full_name: String,
-    add_root: boolean
-  ): Promise<Array<Ipath>> {
+  async get_folders(full_name: String,add_root: boolean ): Promise<Array<Ipath>> {
     //
     // Get the folders
     const folders: Array<Ipath> = await exec(
       "path",
-      [full_name, add_root],
+      [full_name, false, add_root],
       "scandir",
       []
     );
     //
     // Return the folders
     return folders;
-  }
-  //
-  // S
-
-  //
-  // The event listener for the details icon
-  details_clicked() {
-    alert(`clicked on the detail icon of ${this.name}`);
   }
   //
   // The event listener for the summary text
