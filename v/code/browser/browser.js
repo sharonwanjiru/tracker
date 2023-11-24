@@ -5,6 +5,8 @@ import { view, page } from "./../../../../outlook/v/code/view.js";
 // The displaying class
 export class browser extends page {
     root;
+    //The chidren of this folder are paths
+    children;
     //
     //Root is the path we will start to scan for files and folders on teh server
     constructor(root) {
@@ -37,13 +39,17 @@ export class browser extends page {
         //Get the root node from the current form.
         const root = this.get_element("root");
         //
+        //Do not continue with this process if the children are already available
+        if (this.children !== undefined)
+            return;
+        //
         //Get the child paths, i.e., files and folders, of the root foder.
         //N.B. The fisrt time round, the path isspecified without the document
         //root component, so, it neess to be adde
-        const Ipaths = await this.get_child_paths(this.root, true);
+        this.children = await this.get_child_paths(this.root, true);
         //
         //Add the children to the root node
-        Ipaths.forEach(Ipath => this.create_and_show_path(root, Ipath));
+        this.children.forEach(Ipath => this.create_and_show_path(root, Ipath));
     }
     //
     //Get the child folders of the given path and display them
@@ -110,9 +116,6 @@ class file extends path {
             textContent: this.name
         });
     }
-    //Display a file, thus implementing the abstract version
-    show() {
-    }
 }
 //
 // Class folder displays the folder contents
@@ -121,6 +124,9 @@ class folder extends path {
     proxy;
     //The chidren of this folder are paths
     children;
+    //
+    //The image icon element that changes on opening and closing
+    icon;
     //
     constructor(parent, child) {
         //
@@ -134,13 +140,19 @@ class folder extends path {
                 // When toggled open, call the open method
                 if (this.proxy.open)
                     this.open();
+                else
+                    this.close();
             }
         });
         //
         // Create the summary elements
-        const summary = this.create_element("summary", this.proxy, {
-            textContent: this.name
+        const summary = this.create_element("summary", this.proxy);
+        // Create an icon element for the folder
+        this.icon = this.create_element("img", summary, {
+            className: "folder_icon",
+            src: "./icons/closed_folder.png"
         });
+        summary.textContent = this.name;
         // Create a <span> element to wrap the text within the summary
         this.create_element("span", summary, {
             onclick: () => this.summary_clicked()
@@ -149,6 +161,9 @@ class folder extends path {
     //
     //Populate this folder with her children if it is the first time.
     async open() {
+        //
+        // Change the folder icon to indicate an open folder
+        this.icon.src = "./icons/opened_folder.png";
         //
         //Do not continue with this process if the children are already available
         if (this.children !== undefined)
@@ -159,11 +174,24 @@ class folder extends path {
         //
         //Mark this folder as having children
         this.proxy.classList.add("has_children");
+        //
+        // Add a class to the children
+        this.children.forEach((child) => {
+            child.proxy.classList.add("children");
+        });
+    }
+    //
+    // When a folder is closed
+    close() {
+        // Remove the open class
+        this.proxy.classList.remove("has_children");
+        //
+        // Change the folder icon to indicate a closed folder
+        this.icon.src = "./icons/closed_folder.png";
     }
     //Retrieve the childern of this folder
     async get_children() {
         //Scan the this folder for children (as Ipaths)
-        console.log(this.full_name);
         const Ipaths = await this.get_folders(this.full_name, false);
         //
         //The parent rootelement 

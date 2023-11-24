@@ -7,3 +7,10 @@
   height: 30px; 
   margin-left: 0px; 
 }
+.children{
+    margin-left: 20px;
+}
+.summary_container{
+     display: flex;
+     alignItems:center;
+}

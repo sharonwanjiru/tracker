@@ -23,8 +23,10 @@ type Ipath = {
 //
 // The displaying class
 export class browser extends page {
+  //The chidren of this folder are paths
+  private children?: Array<Ipath>;
   //
-  //Root is the path we will start to scan for files and folders on teh server
+  //Root is the path we will start to scan for files and folders on the server
   constructor(public root: string) {
     //
     //Initialize the inherited page
@@ -54,13 +56,16 @@ export class browser extends page {
     //Get the root node from the current form.
     const root = this.get_element("root");
     //
+    //Do not continue with this process if the children are already available
+    if (this.children !== undefined) return;
+    //
     //Get the child paths, i.e., files and folders, of the root foder.
     //N.B. The fisrt time round, the path isspecified without the document
     //root component, so, it neess to be adde
-    const Ipaths: Array<Ipath> = await this.get_child_paths(this.root, true);
+    this.children = await this.get_child_paths(this.root, true);
     //
     //Add the children to the root node
-    Ipaths.forEach(Ipath => this.create_and_show_path(root, Ipath));
+    this.children.forEach((Ipath) => this.create_and_show_path(root, Ipath));
   }
   //
   //Get the child folders of the given path and display them
@@ -92,16 +97,17 @@ export class browser extends page {
     // Create the path object
     if (Ipath.is_file) path = new file(parent, Ipath);
     else path = new folder(parent, Ipath);
-    
   }
 }
 //
 //This class models paths associated with files and folders in computer disk
 abstract class path extends view {
+  //
   //Proxy is the HTML element that represents path visually.
-  //public proxy:HTMLElement;
-  abstract get proxy(): HTMLElement;
-  abstract set proxy(element: HTMLElement);
+  public proxy?:HTMLElement;
+
+  //abstract get proxy(): HTMLElement;
+  //abstract set proxy(i: HTMLElement);
 
   public full_name: string;
   public name: string;
@@ -111,53 +117,58 @@ abstract class path extends view {
     this.full_name = child.path;
     this.name = child.name;
   }
-  
 }
 //
 // Class file displays the file contents
 class file extends path {
   //
-  public proxy: HTMLElement;
+  declare proxy:HTMLElement;
 
   constructor(parent: HTMLElement, child: Ipath) {
     //
     super(parent, child);
     //
     this.proxy = this.create_element("div", this.parent, {
-        className: "file" 
+      className: "file",
     });
     //
     // Create the file icon
     this.create_element("img", this.proxy, {
       className: "file_icon",
-      src:"./icons/files.png"
+      src: "./icons/files.png",
     });
     //
     // Create an element for the file name
     this.create_element("span", this.proxy, {
       className: "file_name",
-      textContent:this.name
+      textContent: this.name,
+      onclick: () => this.file_clicked(),
     });
-    
   }
-  
-  
-
-  
-  //Display a file, thus implementing the abstract version
-  show() {
-    
+  file_clicked() {
+    //
+    // Check for the  .select in the class list
+    const previous_file = document.querySelector(".select");
+    //
+    // Remove the class if there is that class
+    if (previous_file) previous_file.classList.remove("select");
+    //
+    // If there is no add the class list
+    this.proxy.classList.add("select");
   }
 }
 //
 // Class folder displays the folder contents
 class folder extends path {
   //
-  public proxy:HTMLDetailsElement;  
-  
+  declare proxy:HTMLDetailsElement;
+  //
   //The chidren of this folder are paths
-  private children?: Array<path>;
-   //
+  private children?: Array<file|folder>;
+  //
+  //The image icon element that changes on opening and closing
+  private icon: HTMLImageElement;
+  //
   constructor(parent: HTMLElement, child: Ipath) {
     //
     //Initialize the parent system
@@ -165,28 +176,32 @@ class folder extends path {
     //
     // Create the details element
     this.proxy = this.create_element("details", this.parent, {
-        ontoggle:() => {
-            //
-            // When toggled open, call the open method
-            if (this.proxy.open) this.open();
-        }
+      ontoggle: () => {
+        //
+        // When toggled open, call the open method
+        if (this.proxy.open) this.open();
+        else this.close();
+      },
     });
     //
     // Create the summary elements
-    const summary = this.create_element("summary", this.proxy, {
-        textContent: this.name
+    const summary = this.create_element("summary", this.proxy);
+    // Create an icon element for the folder
+    this.icon = this.create_element("img", summary, {
+      className: "folder_icon",
+      src: "./icons/closed_folder.png",
     });
-    
+    summary.textContent = this.name;
     // Create a <span> element to wrap the text within the summary
-    this.create_element("span", summary, {
-        onclick:() => this.summary_clicked()
-    });
-       
+    summary.onclick = (event) => this.summary_clicked(event);
   }
 
   //
   //Populate this folder with her children if it is the first time.
   async open(): Promise<void> {
+    //
+    // Change the folder icon to indicate an open folder
+    this.icon.src = "./icons/opened_folder.png";
     //
     //Do not continue with this process if the children are already available
     if (this.children !== undefined) return;
@@ -196,37 +211,45 @@ class folder extends path {
     //
     //Mark this folder as having children
     this.proxy.classList.add("has_children");
+    //
+    // Add a class to the children
+    this.children.forEach((child) => {
+      child.proxy.classList.add("children");
+    });
   }
-  
+  //
+  // When a folder is closed
+  close() {
+    //
+    // Remove the open class
+    this.proxy.classList.remove("has_children");
+    //
+    // Change the folder icon to indicate a closed folder
+    this.icon.src = "./icons/closed_folder.png";
+  }
   //Retrieve the childern of this folder
-  async get_children():Promise<Array<path>>{
-     
-      //Scan the this folder for children (as Ipaths)
-       console.log(this.full_name);
-      const Ipaths: Array<Ipath> = await this.get_folders(this.full_name, false);
-     
-      
-      //
-      //The parent rootelement 
-      const parent = this.proxy;
-      //
-      //Convert the the child Ipaths to paths
-      const paths:Array<path> = Ipaths.map(
-        Ipath=>
-            Ipath.is_file 
-            ? new file(parent, Ipath)
-            : new folder(parent, Ipath)
-        );
-        //
-        //Return the paths
-        return paths; 
-     
+  async get_children(): Promise<Array<file|folder>> {
+    //
+    //Scan the this folder for children (as Ipaths)
+    const Ipaths: Array<Ipath> = await this.get_folders(this.full_name, false);
+    //
+    //The parent rootelement
+    const parent = this.proxy;
+    //
+    //Convert the the child Ipaths to paths
+    const paths: Array<file|folder> = Ipaths.map((Ipath) =>
+      Ipath.is_file ? new file(parent, Ipath) : new folder(parent, Ipath)
+    );
+    //
+    //Return the paths
+    return paths;
   }
-
-
   //
   // Get the folders inside the parent folder
-  async get_folders(full_name: String,add_root: boolean ): Promise<Array<Ipath>> {
+  async get_folders(
+    full_name: String,
+    add_root: boolean
+  ): Promise<Array<Ipath>> {
     //
     // Get the folders
     const folders: Array<Ipath> = await exec(
@@ -239,9 +262,18 @@ class folder extends path {
     // Return the folders
     return folders;
   }
+
   //
   // The event listener for the summary text
-  summary_clicked() {
-    alert(`clicked on the summary text of ${this.name}`);
+  summary_clicked(event: Event) {
+    //
+    // Stop propagation to the summary
+    event.stopPropagation();
+    //
+    // Check for a previously selected summary
+    const selected_summary = document.querySelector(".select");
+    //
+    // Remove highlight from the previously selected
+    if (selected_summary) selected_summary.classList.remove("select");
   }
 }
