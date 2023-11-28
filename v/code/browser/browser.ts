@@ -51,7 +51,7 @@ export class browser extends page {
     */
   //
   //  Display the server contents as listed in the html above
-  async show_panels(): Promise<void> {
+  public async show_panels(): Promise<void> {
     //
     //Get the root node from the current form.
     const root = this.get_element("root");
@@ -69,10 +69,7 @@ export class browser extends page {
   }
   //
   //Get the child folders of the given path and display them
-  async get_child_paths(
-    path: string,
-    add_root: boolean
-  ): Promise<Array<Ipath>> {
+  private async get_child_paths( path: string,add_root: boolean): Promise<Array<Ipath>> {
     //
     //Scan the folders (on the index page??)
     const result: Array<Ipath> = await exec(
@@ -104,7 +101,7 @@ export class browser extends page {
 abstract class path extends view {
   //
   //Proxy is the HTML element that represents path visually.
-  public proxy?:HTMLElement;
+  public proxy?: HTMLElement;
 
   //abstract get proxy(): HTMLElement;
   //abstract set proxy(i: HTMLElement);
@@ -117,12 +114,26 @@ abstract class path extends view {
     this.full_name = child.path;
     this.name = child.name;
   }
+  
+  // Common method for handling click events
+  protected handle_click() {
+    //
+    // Check for a previously selected element
+    const previous_selected = document.querySelector(".select");
+    //
+    // Remove highlight from the previously selected
+    if (previous_selected) previous_selected.classList.remove("select");
+    //
+    // Add a select to the selected entity which is the proxy
+    if (this.proxy) {this.proxy.classList.add("select")};
+  }
+
 }
 //
 // Class file displays the file contents
 class file extends path {
   //
-  declare proxy:HTMLElement;
+  declare proxy: HTMLElement;
 
   constructor(parent: HTMLElement, child: Ipath) {
     //
@@ -142,29 +153,18 @@ class file extends path {
     this.create_element("span", this.proxy, {
       className: "file_name",
       textContent: this.name,
-      onclick: () => this.file_clicked(),
+      onclick: () => this.handle_click()
     });
-  }
-  file_clicked() {
-    //
-    // Check for the  .select in the class list
-    const previous_file = document.querySelector(".select");
-    //
-    // Remove the class if there is that class
-    if (previous_file) previous_file.classList.remove("select");
-    //
-    // If there is no add the class list
-    this.proxy.classList.add("select");
   }
 }
 //
 // Class folder displays the folder contents
 class folder extends path {
   //
-  declare proxy:HTMLDetailsElement;
+  declare proxy: HTMLDetailsElement;
   //
   //The chidren of this folder are paths
-  private children?: Array<file|folder>;
+  private children?: Array<file | folder>;
   //
   //The image icon element that changes on opening and closing
   private icon: HTMLImageElement;
@@ -184,21 +184,25 @@ class folder extends path {
       },
     });
     //
-    // Create the summary elements
+    //Create the summary tag
     const summary = this.create_element("summary", this.proxy);
+    //
     // Create an icon element for the folder
-    this.icon = this.create_element("img", summary, {
+    this.icon = this.create_element("img",summary, {
       className: "folder_icon",
       src: "./icons/closed_folder.png",
     });
-    summary.textContent = this.name;
+    //
+    // Create the text element to hold the text
+    this.create_element("span", summary,{textContent:this.name});
+    //
     // Create a <span> element to wrap the text within the summary
     summary.onclick = (event) => this.summary_clicked(event);
   }
 
   //
   //Populate this folder with her children if it is the first time.
-  async open(): Promise<void> {
+  private async open(): Promise<void> {
     //
     // Change the folder icon to indicate an open folder
     this.icon.src = "./icons/opened_folder.png";
@@ -219,16 +223,19 @@ class folder extends path {
   }
   //
   // When a folder is closed
-  close() {
+  private close() {
     //
     // Remove the open class
     this.proxy.classList.remove("has_children");
     //
     // Change the folder icon to indicate a closed folder
-    this.icon.src = "./icons/closed_folder.png";
+    this.icon.src = "./icons/closed_folder.png"; 
+    //
+    // Remove the children class
+    this.icon.classList.remove("children"); 
   }
   //Retrieve the childern of this folder
-  async get_children(): Promise<Array<file|folder>> {
+  private async get_children(): Promise<Array<file | folder>> {
     //
     //Scan the this folder for children (as Ipaths)
     const Ipaths: Array<Ipath> = await this.get_folders(this.full_name, false);
@@ -237,7 +244,7 @@ class folder extends path {
     const parent = this.proxy;
     //
     //Convert the the child Ipaths to paths
-    const paths: Array<file|folder> = Ipaths.map((Ipath) =>
+    const paths: Array<file | folder> = Ipaths.map((Ipath) =>
       Ipath.is_file ? new file(parent, Ipath) : new folder(parent, Ipath)
     );
     //
@@ -246,7 +253,7 @@ class folder extends path {
   }
   //
   // Get the folders inside the parent folder
-  async get_folders(
+  private async get_folders(
     full_name: String,
     add_root: boolean
   ): Promise<Array<Ipath>> {
@@ -265,15 +272,13 @@ class folder extends path {
 
   //
   // The event listener for the summary text
-  summary_clicked(event: Event) {
+  private summary_clicked(event: Event) {
     //
     // Stop propagation to the summary
     event.stopPropagation();
     //
-    // Check for a previously selected summary
-    const selected_summary = document.querySelector(".select");
-    //
-    // Remove highlight from the previously selected
-    if (selected_summary) selected_summary.classList.remove("select");
+    // Handle the click
+    this.handle_click();
+    
   }
 }

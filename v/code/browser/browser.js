@@ -8,7 +8,7 @@ export class browser extends page {
     //The chidren of this folder are paths
     children;
     //
-    //Root is the path we will start to scan for files and folders on teh server
+    //Root is the path we will start to scan for files and folders on the server
     constructor(root) {
         //
         //Initialize the inherited page
@@ -49,7 +49,7 @@ export class browser extends page {
         this.children = await this.get_child_paths(this.root, true);
         //
         //Add the children to the root node
-        this.children.forEach(Ipath => this.create_and_show_path(root, Ipath));
+        this.children.forEach((Ipath) => this.create_and_show_path(root, Ipath));
     }
     //
     //Get the child folders of the given path and display them
@@ -82,6 +82,11 @@ export class browser extends page {
 //This class models paths associated with files and folders in computer disk
 class path extends view {
     parent;
+    //
+    //Proxy is the HTML element that represents path visually.
+    proxy;
+    //abstract get proxy(): HTMLElement;
+    //abstract set proxy(i: HTMLElement);
     full_name;
     name;
     constructor(parent, child) {
@@ -90,30 +95,45 @@ class path extends view {
         this.full_name = child.path;
         this.name = child.name;
     }
+    // Common method for handling click events
+    handle_click() {
+        //
+        // Check for a previously selected element
+        const previous_selected = document.querySelector(".select");
+        //
+        // Remove highlight from the previously selected
+        if (previous_selected)
+            previous_selected.classList.remove("select");
+        //
+        // Add a select to the selected entity which is the proxy
+        if (this.proxy) {
+            this.proxy.classList.add("select");
+        }
+        ;
+    }
 }
 //
 // Class file displays the file contents
 class file extends path {
-    //
-    proxy;
     constructor(parent, child) {
         //
         super(parent, child);
         //
         this.proxy = this.create_element("div", this.parent, {
-            className: "file"
+            className: "file",
         });
         //
         // Create the file icon
         this.create_element("img", this.proxy, {
             className: "file_icon",
-            src: "./icons/files.png"
+            src: "./icons/files.png",
         });
         //
         // Create an element for the file name
         this.create_element("span", this.proxy, {
             className: "file_name",
-            textContent: this.name
+            textContent: this.name,
+            onclick: () => this.handle_click(),
         });
     }
 }
@@ -121,7 +141,6 @@ class file extends path {
 // Class folder displays the folder contents
 class folder extends path {
     //
-    proxy;
     //The chidren of this folder are paths
     children;
     //
@@ -142,21 +161,23 @@ class folder extends path {
                     this.open();
                 else
                     this.close();
-            }
+            },
         });
         //
-        // Create the summary elements
+        //Create the summary tag
         const summary = this.create_element("summary", this.proxy);
+        //
         // Create an icon element for the folder
         this.icon = this.create_element("img", summary, {
             className: "folder_icon",
-            src: "./icons/closed_folder.png"
+            src: "./icons/closed_folder.png",
         });
-        summary.textContent = this.name;
+        //
+        // Create the text element to hold the text
+        this.create_element("span", summary, { textContent: this.name });
+        //
         // Create a <span> element to wrap the text within the summary
-        this.create_element("span", summary, {
-            onclick: () => this.summary_clicked()
-        });
+        summary.onclick = (event) => this.summary_clicked(event);
     }
     //
     //Populate this folder with her children if it is the first time.
@@ -183,24 +204,27 @@ class folder extends path {
     //
     // When a folder is closed
     close() {
+        //
         // Remove the open class
         this.proxy.classList.remove("has_children");
         //
         // Change the folder icon to indicate a closed folder
         this.icon.src = "./icons/closed_folder.png";
+        //
+        // Remove the children class
+        this.icon.classList.remove("children");
     }
     //Retrieve the childern of this folder
     async get_children() {
+        //
         //Scan the this folder for children (as Ipaths)
         const Ipaths = await this.get_folders(this.full_name, false);
         //
-        //The parent rootelement 
+        //The parent rootelement
         const parent = this.proxy;
         //
         //Convert the the child Ipaths to paths
-        const paths = Ipaths.map(Ipath => Ipath.is_file
-            ? new file(parent, Ipath)
-            : new folder(parent, Ipath));
+        const paths = Ipaths.map((Ipath) => Ipath.is_file ? new file(parent, Ipath) : new folder(parent, Ipath));
         //
         //Return the paths
         return paths;
@@ -217,7 +241,12 @@ class folder extends path {
     }
     //
     // The event listener for the summary text
-    summary_clicked() {
-        alert(`clicked on the summary text of ${this.name}`);
+    summary_clicked(event) {
+        //
+        // Stop propagation to the summary
+        event.stopPropagation();
+        //
+        // Handle the click
+        this.handle_click();
     }
 }
